@@ -58,4 +58,4 @@ if not token:
     exit()
 
 bot.add_cog(AttentionAttention(bot))
-bot.run(os.getenv("DISCORD_TOKEN"))
+bot.run(token)
