@@ -27,6 +27,9 @@ try:
 except:
     print("Error loading libopus from the Nix store")
 
+HOUR = 1
+MINUTE = 45
+
 class AttentionAttention(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -34,9 +37,7 @@ class AttentionAttention(commands.Cog):
     
     @tasks.loop(hours=24)
     async def attention(self):
-        print("attention")
         voice_channel = self.bot.get_channel(690720641804140554)
-        print(voice_channel)
         if voice_channel != None:
             voice_client: discord.VoiceClient = await voice_channel.connect()
             audio_source = discord.FFmpegPCMAudio("ETS_fermeture.mp3")
@@ -48,14 +49,12 @@ class AttentionAttention(commands.Cog):
 
     @attention.before_loop
     async def before_attention(self):
-        hour = 1
-        minute = 44
         await bot.wait_until_ready()
         now = datetime.now()
-        future = datetime(now.year, now.month, now.day, hour, minute)
-        print("before")
-        if now.hour >= hour and now.minute > minute:
+        future = datetime(now.year, now.month, now.day, HOUR, MINUTE)
+        if now.hour >= HOUR and now.minute > MINUTE:
             future += timedelta(days=1)
+        print("Will start playing at:")
         print(future)
         await asyncio.sleep((future-now).seconds)
 
