@@ -19,7 +19,8 @@ import discord
 import asyncio
 import os
 
-from discord.ext import commands
+from datetime import datetime, timedelta
+from discord.ext import commands, tasks
 
 try:
     discord.opus.load_opus("/nix/store/ns50x9ffqqjawgdzpafawwdr69ik8rib-libopus-1.3.1/lib/libopus.so.0")
@@ -29,11 +30,13 @@ except:
 class AttentionAttention(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.attention.start()
     
-    @commands.command()
-    async def attention(self, ctx):
-        user = ctx.author
-        voice_channel=user.voice.channel
+    @tasks.loop(hours=24)
+    async def attention(self):
+        print("attention")
+        voice_channel = self.bot.get_channel(690720641804140554)
+        print(voice_channel)
         if voice_channel != None:
             voice_client: discord.VoiceClient = await voice_channel.connect()
             audio_source = discord.FFmpegPCMAudio("ETS_fermeture.mp3")
@@ -42,6 +45,19 @@ class AttentionAttention(commands.Cog):
             while voice_client.is_playing():
                 await asyncio.sleep(1)
             await voice_client.disconnect()
+
+    @attention.before_loop
+    async def before_attention(self):
+        hour = 1
+        minute = 44
+        await bot.wait_until_ready()
+        now = datetime.now()
+        future = datetime(now.year, now.month, now.day, hour, minute)
+        print("before")
+        if now.hour >= hour and now.minute > minute:
+            future += timedelta(days=1)
+        print(future)
+        await asyncio.sleep((future-now).seconds)
 
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or("!"),
