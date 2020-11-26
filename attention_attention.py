@@ -37,7 +37,17 @@ class AttentionAttention(commands.Cog):
     
     @tasks.loop(hours=24)
     async def attention(self):
-        voice_channel = self.bot.get_channel(690720641804140554)
+        loop = asyncio.get_event_loop()
+        vcs_to_play = []
+        for guild in self.bot.guilds:
+            most_populated_vc = max(guild.voice_channels, key=lambda x: len(x.members))
+            if len(most_populated_vc.members) == 0:
+                continue
+            vcs_to_play.append(most_populated_vc)
+
+        await asyncio.gather(*[self.play_attention_attention(vc) for vc in vcs_to_play])
+
+    async def play_attention_attention(self, voice_channel):
         if voice_channel != None:
             voice_client: discord.VoiceClient = await voice_channel.connect()
             audio_source = discord.FFmpegPCMAudio("ETS_fermeture.mp3")
@@ -58,13 +68,17 @@ class AttentionAttention(commands.Cog):
         print(future)
         await asyncio.sleep((future-now).seconds)
 
+intents = discord.Intents.default()
+intents.members = True
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or("!"),
-                   description="ATTENTION! ATTENTION!")
+                   description="ATTENTION! ATTENTION!",
+                   intents=intents)
 
 @bot.event
 async def on_ready():
     print("Logged in as {0} ({0.id})".format(bot.user))
+    print(f"Discord bot invite link: {discord.utils.oauth_url(client_id=bot.user.id)}")
 
 token = os.getenv("DISCORD_TOKEN")
 
