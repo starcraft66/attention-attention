@@ -14,30 +14,34 @@
 # You should have received a copy of the GNU General Public License
 # along with attention-attention.  If not, see <http://www.gnu.org/licenses/>.
 
-
-import discord
 import asyncio
 import os
-
 from datetime import datetime, timedelta
+
+import discord
 from discord.ext import commands, tasks
 
 try:
+    discord.opus.load_opus("/usr/lib/x86_64-linux-gnu/libopus.so.0")
+except OSError as exc:
+    print(f"Error loading libopus normally: {exc}")
+
+try:
     discord.opus.load_opus("/nix/store/ns50x9ffqqjawgdzpafawwdr69ik8rib-libopus-1.3.1/lib/libopus.so.0")
-except:
-    print("Error loading libopus from the Nix store")
+except OSError as exc:
+    print(f"Error loading libopus from the Nix store: {exc}")
 
 HOUR = 1
 MINUTE = 45
 
+
 class AttentionAttention(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
+    def __init__(self, client):
+        self.bot = client
         self.attention.start()
-    
+
     @tasks.loop(hours=24)
     async def attention(self):
-        loop = asyncio.get_event_loop()
         vcs_to_play = []
         for guild in self.bot.guilds:
             most_populated_vc = max(guild.voice_channels, key=lambda x: len(x.members))
@@ -48,7 +52,7 @@ class AttentionAttention(commands.Cog):
         await asyncio.gather(*[self.play_attention_attention(vc) for vc in vcs_to_play])
 
     async def play_attention_attention(self, voice_channel):
-        if voice_channel != None:
+        if voice_channel is not None:
             voice_client: discord.VoiceClient = await voice_channel.connect()
             audio_source = discord.FFmpegPCMAudio("ETS_fermeture.mp3")
             if not voice_client.is_playing():
@@ -68,12 +72,15 @@ class AttentionAttention(commands.Cog):
         print(future)
         await asyncio.sleep((future-now).seconds)
 
+
 intents = discord.Intents.default()
 intents.members = True
+
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or("!"),
                    description="ATTENTION! ATTENTION!",
                    intents=intents)
+
 
 @bot.event
 async def on_ready():
