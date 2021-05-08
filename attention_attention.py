@@ -65,7 +65,7 @@ intents = discord.Intents.default()
 intents.members = True
 
 
-bot = commands.Bot(command_prefix=commands.when_mentioned_or("!"),
+bot = commands.Bot(command_prefix=commands.when_mentioned_or("!attention"),
                    description="ATTENTION! ATTENTION!",
                    intents=intents)
 
