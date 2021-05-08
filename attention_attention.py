@@ -16,10 +16,10 @@
 
 import asyncio
 import os
-from datetime import datetime, timedelta
 
 import discord
-from discord.ext import commands, tasks
+from discord.ext import commands
+import aiocron
 
 try:
     discord.opus.load_opus("/usr/lib/x86_64-linux-gnu/libopus.so.0")
@@ -38,9 +38,8 @@ MINUTE = 45
 class AttentionAttention(commands.Cog):
     def __init__(self, client):
         self.bot = client
-        self.attention.start()
+        aiocron.crontab('45 1 * * *', func=self.attention, start=True)
 
-    @tasks.loop(hours=24)
     async def attention(self):
         vcs_to_play = []
         for guild in self.bot.guilds:
@@ -60,17 +59,6 @@ class AttentionAttention(commands.Cog):
             while voice_client.is_playing():
                 await asyncio.sleep(1)
             await voice_client.disconnect()
-
-    @attention.before_loop
-    async def before_attention(self):
-        await bot.wait_until_ready()
-        now = datetime.now()
-        future = datetime(now.year, now.month, now.day, HOUR, MINUTE)
-        if now.hour >= HOUR and now.minute > MINUTE:
-            future += timedelta(days=1)
-        print("Will start playing at:")
-        print(future)
-        await asyncio.sleep((future-now).seconds)
 
 
 intents = discord.Intents.default()
