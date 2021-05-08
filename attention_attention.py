@@ -27,9 +27,9 @@ except OSError as exc:
     print(f"Error loading libopus normally: {exc}")
 
 try:
-    discord.opus.load_opus("/nix/store/ns50x9ffqqjawgdzpafawwdr69ik8rib-libopus-1.3.1/lib/libopus.so.0")
+    discord.opus.load_opus(os.getenv("LIBOPUS_PATH"))
 except OSError as exc:
-    print(f"Error loading libopus from the Nix store: {exc}")
+    print(f"Error loading libopus from the LIBOPUS_PATH variable: {exc}")
 
 HOUR = 1
 MINUTE = 45
