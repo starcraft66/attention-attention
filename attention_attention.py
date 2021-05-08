@@ -60,13 +60,11 @@ class AttentionAttention(commands.Cog):
     @attention.before_loop
     async def before_attention(self):
         await bot.wait_until_ready()
-        now = datetime.now()
-        future = datetime(now.year, now.month, now.day, HOUR, MINUTE)
-        if now.hour >= HOUR and now.minute > MINUTE:
-            future += timedelta(days=1)
-        print("Will start playing at:")
-        print(future)
-        await asyncio.sleep((future-now).seconds)
+        while True:
+            now = datetime.now()
+            if now.hour == HOUR and now.minute == MINUTE:
+                break
+            await asyncio.sleep(45)
 
 intents = discord.Intents.default()
 intents.members = True
