@@ -16,10 +16,10 @@
 
 import asyncio
 import os
-from datetime import datetime, timedelta
 
 import discord
-from discord.ext import commands, tasks
+from discord.ext import commands
+import aiocron
 
 try:
     discord.opus.load_opus("/usr/lib/x86_64-linux-gnu/libopus.so.0")
@@ -27,9 +27,9 @@ except OSError as exc:
     print(f"Error loading libopus normally: {exc}")
 
 try:
-    discord.opus.load_opus("/nix/store/ns50x9ffqqjawgdzpafawwdr69ik8rib-libopus-1.3.1/lib/libopus.so.0")
+    discord.opus.load_opus(os.getenv("LIBOPUS_PATH"))
 except OSError as exc:
-    print(f"Error loading libopus from the Nix store: {exc}")
+    print(f"Error loading libopus from the LIBOPUS_PATH variable: {exc}")
 
 HOUR = 1
 MINUTE = 45
@@ -38,9 +38,8 @@ MINUTE = 45
 class AttentionAttention(commands.Cog):
     def __init__(self, client):
         self.bot = client
-        self.attention.start()
+        aiocron.crontab('45 1 * * *', func=self.attention, start=True)
 
-    @tasks.loop(hours=24)
     async def attention(self):
         vcs_to_play = []
         for guild in self.bot.guilds:
@@ -61,30 +60,19 @@ class AttentionAttention(commands.Cog):
                 await asyncio.sleep(1)
             await voice_client.disconnect()
 
-    @attention.before_loop
-    async def before_attention(self):
-        await bot.wait_until_ready()
-        now = datetime.now()
-        future = datetime(now.year, now.month, now.day, HOUR, MINUTE)
-        if now.hour >= HOUR and now.minute > MINUTE:
-            future += timedelta(days=1)
-        print("Will start playing at:")
-        print(future)
-        await asyncio.sleep((future-now).seconds)
-
 
 intents = discord.Intents.default()
 intents.members = True
 
 
-bot = commands.Bot(command_prefix=commands.when_mentioned_or("!"),
+bot = commands.Bot(command_prefix=commands.when_mentioned_or("!attention"),
                    description="ATTENTION! ATTENTION!",
                    intents=intents)
 
 
 @bot.event
 async def on_ready():
-    print("Logged in as {0} ({0.id})".format(bot.user))
+    print(f"Logged in as {bot.user} ({bot.user.id})")
     print(f"Discord bot invite link: {discord.utils.oauth_url(client_id=bot.user.id)}")
 
 token = os.getenv("DISCORD_TOKEN")
