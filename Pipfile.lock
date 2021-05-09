@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "73847c9002fe2664e3ef5738de28f26ccb12a6dbea83bc2abe8df2f2023f4b34"
+            "sha256": "f06b9cccc5b87a475335e9c1595b441a82c43f3bf1b83aef3182df0a4c382387"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -16,6 +16,14 @@
         ]
     },
     "default": {
+        "aiocron": {
+            "hashes": [
+                "sha256:3146674bd8f0ad5de5525d865eac02a4cc2207e15ff564f72288f4b900268ac7",
+                "sha256:89d598f6cfa07d344144cb87378ea285aadcf4c731becb575f275ac6c1153b5e"
+            ],
+            "index": "pypi",
+            "version": "==1.4"
+        },
         "aiohttp": {
             "hashes": [
                 "sha256:02f46fc0e3c5ac58b80d4d56eb0a7c7d97fcef69ace9326289fb9f1955e65cfe",
@@ -125,6 +133,14 @@
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'",
             "version": "==4.0.0"
         },
+        "croniter": {
+            "hashes": [
+                "sha256:0c67c8afbf0f9ac3fce587caa7c911f871be8a42f6169e9f486ae125ab54a1b0",
+                "sha256:57f36df4f5a1c31bbf50bbffa3551612c19f6156ab1e88e2e42342ccbb9f9b9a"
+            ],
+            "markers": "python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'",
+            "version": "==1.0.13"
+        },
         "discord.py": {
             "extras": [
                 "voice"
@@ -218,6 +234,21 @@
             ],
             "version": "==1.4.0"
         },
+        "python-dateutil": {
+            "hashes": [
+                "sha256:73ebfe9dbf22e832286dafa60473e4cd239f8592f699aa5adaf10050e6e1823c",
+                "sha256:75bb3f31ea686f1197762692a9ee6a7550b59fc6ca3a1f4b5d7e32fb98e2da2a"
+            ],
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
+            "version": "==2.8.1"
+        },
+        "pytz": {
+            "hashes": [
+                "sha256:83a4a90894bf38e243cf052c8b58f381bfe9a7a483f6a9cab140bc7f702ac4da",
+                "sha256:eb10ce3e7736052ed3623d49975ce333bcd712c7bb19a58b9e2089d4057d0798"
+            ],
+            "version": "==2021.1"
+        },
         "six": {
             "hashes": [
                 "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926",
@@ -233,6 +264,13 @@
                 "sha256:779383f6086d90c99ae41cf0ff39aac8a7937a9283ce0a414e5dd782f4c94a84"
             ],
             "version": "==3.10.0.0"
+        },
+        "tzlocal": {
+            "hashes": [
+                "sha256:643c97c5294aedc737780a49d9df30889321cbe1204eac2c2ec6134035a92e44",
+                "sha256:e2cb6c6b5b604af38597403e9852872d7f534962ae2954c7f35efcb1ccacf4a4"
+            ],
+            "version": "==2.1"
         },
         "yarl": {
             "hashes": [
