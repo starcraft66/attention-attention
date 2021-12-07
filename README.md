@@ -1,6 +1,7 @@
 # Attention! Attention!
 
 [![Built with Nix](https://builtwithnix.org/badge.svg)](https://builtwithnix.org)
+[![Docker Image Build Status](https://github-actions.40ants.com/starcraft66/attention-attention/matrix.svg)](https://github.com/starcraft66/attention-attention)
 
 `attention-attention` is a friendly discord bot to remind you over discord that school is closing soon, wheverver you are, even outside of school! Just be in voice chat at the right time and you'll hear the intercom!
 
