@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="attention-attention",
-    version=1.0,
+    version="0.1.0",
     author="Tristan Gosselin-Hane, Roch D'Amour",
     author_email="starcraft66@gmail.com, roch.damour@gmail.com",
     description="Plays attention-attention in voice chat early in the morning",
@@ -13,6 +13,8 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/starcraft66/attention-attention",
     packages=setuptools.find_packages(),
+    package_data={'': ['attention-attention/media']},
+    include_package_data=True,
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
