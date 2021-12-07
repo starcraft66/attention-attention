@@ -1,0 +1,35 @@
+name: "Docker Image"
+on:
+  push:
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        arch:
+        - x86_64-linux
+        - aarch64-linux
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2.4.0
+    - uses: docker/setup-qemu-action@v1
+    - uses: cachix/install-nix-action@v16
+      with:
+        extra_nix_config: |
+          access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+    - run: nix build -v -L --option system ${{ matrix.arch }} --extra-platforms ${{ matrix.arch }} .#dockerImage.${{ matrix.arch }}
+    - run: docker load < result
+    - name: Log in to the Container registry
+      uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    - name: Tag and push Docker image
+      run: |
+        TAG=$(nix eval '.#attention-attention.version' | sed s/\"//g)
+        docker tag attention-attention:$TAG ghcr.io/starcraft66/attention-attention/attention-attention:$TAG
+        docker push ghcr.io/starcraft66/attention-attention/attention-attention:v1.0.0
