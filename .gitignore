@@ -1,4 +1,5 @@
 .env
 .direnv
+result
 
 __pycache__
