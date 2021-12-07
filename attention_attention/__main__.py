@@ -18,6 +18,7 @@ import asyncio
 import os
 import importlib.resources
 
+import attention_attention
 import discord
 from discord.ext import commands
 import aiocron
@@ -70,7 +71,6 @@ class AttentionAttention(commands.Cog):
             Announcement(2, 0, get_media_path("attention-attention-2.mp3")),
         ]
         for anc in self._announcements:
-            print(anc.audio_file)
             aiocron.crontab(f"{anc.minute} {anc.hour} * * *", func=self.attention, args=[anc.audio_file], start=True)
 
     async def attention(self, audio_file):
@@ -95,6 +95,7 @@ class AttentionAttention(commands.Cog):
 
 
 if __name__ == "__main__":
+    print("Attention! Attention! " + attention_attention.__version__ + " starting!")
     intents = discord.Intents.default()
     intents.members = True
 
