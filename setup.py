@@ -13,7 +13,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/starcraft66/attention-attention",
     packages=setuptools.find_packages(),
-    package_data={'': ['attention-attention/media']},
+    package_data={'': ['attention_attention/media']},
     include_package_data=True,
     classifiers=[
         "Programming Language :: Python :: 3",

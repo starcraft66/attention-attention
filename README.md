@@ -9,7 +9,7 @@
 1. Install [Nix](https://nixos.org/download.html) on your system and enable flake support.
 2. If you have `direnv` installed and set up, run `direnv allow`. Otherwise, enter the `devShell` using `nix develop`.
 3. Hack away!
-4. Run the program using `python -m attention-attention`.
+4. Run the program using `python -m attention_attention`.
 5. Build the python package using `nix build .#`.
 
 ## Docker image instructions

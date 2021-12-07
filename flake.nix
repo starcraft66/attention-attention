@@ -37,7 +37,7 @@
           ];
 
           doCheck = false;
-          pythonImportsCheck = [ "attention-attention" ];
+          pythonImportsCheck = [ "attention_attention" ];
 
           meta = with pkgs.lib; {
             description = "A friendly discord reminder that school's about to close!";
@@ -62,7 +62,7 @@
               "TZ=America/Toronto"
               "SSL_CERT_FILE=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
             ];
-            Cmd = [ "${customPython}/bin/python" "-m" "attention-attention" ];
+            Cmd = [ "${customPython}/bin/python" "-m" "attention_attention" ];
           };
         };
 
