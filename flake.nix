@@ -1,5 +1,5 @@
 {
-  description = "Application packaged using poetry2nix";
+  description = "attention-attention reference Nix architecture";
 
   # inputs.nixpkgs.url = "github:NixOS/nixpkgs";
   inputs.nixpkgs.url = "github:starcraft66/nixpkgs/attention-attention";
@@ -27,7 +27,7 @@
 
         packages.attention-attention = pkgs.python38Packages.buildPythonPackage rec {
           pname = "attention-attention";
-          version = "0.1.0";
+          version = "v1.0.0";
 
           src = ./.;
 
@@ -48,9 +48,10 @@
         };
 
         dockerImage = let
-            customPython = pkgs.python38.withPackages (ps: [ apps.attention-attention ]);
+            customPython = pkgs.python38.withPackages (ps: [ packages.attention-attention ]);
           in pkgs.dockerTools.buildImage {
           name = "attention-attention";
+          tag = packages.attention-attention.version;
           contents = with pkgs; [
             bashInteractive
             busybox
