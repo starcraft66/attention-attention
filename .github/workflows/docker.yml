@@ -32,4 +32,4 @@ jobs:
       run: |
         TAG=$(nix eval '.#attention-attention.version' | sed s/\"//g)
         docker tag attention-attention:$TAG ghcr.io/starcraft66/attention-attention/attention-attention:$TAG
-        docker push ghcr.io/starcraft66/attention-attention/attention-attention:v1.0.0
+        docker push ghcr.io/starcraft66/attention-attention/attention-attention:$TAG
