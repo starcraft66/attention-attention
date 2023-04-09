@@ -17,20 +17,20 @@
         };
 
         devShell = let
-            customPython = pkgs.python38.withPackages (ps: with pkgs.python38.pkgs; [ discordpy aiocron tzlocal ]);
+            customPython = pkgs.python39.withPackages (ps: with pkgs.python39.pkgs; [ discordpy aiocron tzlocal ]);
           in pkgs.mkShell {
           buildInputs = with pkgs; [
             customPython
           ];
         };
 
-        packages.attention-attention = pkgs.python38Packages.buildPythonPackage rec {
+        packages.attention-attention = pkgs.python39Packages.buildPythonPackage rec {
           pname = "attention-attention";
           version = "v1.0.0";
 
           src = ./.;
 
-          propagatedBuildInputs = with pkgs.python38.pkgs; [
+          propagatedBuildInputs = with pkgs.python39.pkgs; [
             discordpy
             aiocron
           ];
@@ -47,7 +47,7 @@
         };
 
         dockerImage = let
-            customPython = pkgs.python38.withPackages (ps: [ packages.attention-attention ]);
+            customPython = pkgs.python39.withPackages (ps: [ packages.attention-attention ]);
           in pkgs.dockerTools.buildImage {
           name = "attention-attention";
           tag = packages.attention-attention.version;
