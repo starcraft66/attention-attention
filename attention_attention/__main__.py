@@ -20,40 +20,13 @@ import importlib.resources
 
 import attention_attention
 import discord
+from discord import app_commands
 from discord.ext import commands
 import aiocron
-
-libopus_loaded = False
-
-try:
-    discord.opus._load_default()
-    libopus_loaded = True
-except OSError as exc:
-    print(f"Error loading libopus normally: {exc}")
-except AttributeError as exc:
-    print(f"Error loading libopus normally: {exc}")
-
-try:
-    if not libopus_loaded:
-        discord.opus.load_opus(os.getenv("LIBOPUS_PATH"))
-except OSError as exc:
-    print(f"Error loading libopus from the LIBOPUS_PATH variable: {exc}")
-    exit(1)
-except AttributeError as exc:
-    print(f"Error loading libopus from the LIBOPUS_PATH variable: {exc}")
-    exit(1)
-
+import datetime
 
 def get_media_path(path):
-    """
-    Unsafely get the path to a resource.
-    Using the conext manager allows one to work around
-    getting resources from zip files and such, then
-    disposing of the termporary files but we don't need
-    that and this method will make the code more readable
-    """
-    with importlib.resources.path(__package__ + ".media", path) as loc:
-        return loc
+    return importlib.resources.files(__package__ + ".media") / path
 
 
 class Announcement():
@@ -72,6 +45,30 @@ class AttentionAttention(commands.Cog):
         ]
         for anc in self._announcements:
             aiocron.crontab(f"{anc.minute} {anc.hour} * * *", func=self.attention, args=[anc.audio_file], start=True)
+
+    async def owner_only(interaction: discord.Interaction):
+        return await interaction.client.is_owner(interaction.user)
+
+    @app_commands.command(name="attention")
+    async def attention_cmd(self, interaction: discord.Interaction) -> None:
+        """ /attention """
+        await interaction.response.send_message("Attention! Attention!")
+
+    @app_commands.command(name="about")
+    async def about_cmd(self, interaction: discord.Interaction) -> None:
+        """ /about """
+        await interaction.response.send_message(f"Attention! Attention! {attention_attention.__version__}\nInvite link: {discord.utils.oauth_url(client_id=self.bot.user.id)}", ephemeral=True)
+
+    @app_commands.command(name="sync")
+    @app_commands.guilds(discord.Object(id=499989296451944489)) # Hera Ca$h Money CorPoration
+    @app_commands.check(owner_only)
+    async def sync_cmd(self, interaction: discord.Interaction) -> None:
+        """ /sync """
+        await interaction.response.send_message("Syncing the command tree now...")
+        print("Performing command tree sync")
+        await self.bot.tree.sync()
+        await self.bot.tree.sync(guild=discord.Object(id=499989296451944489))
+        print("Completed command tree sync")
 
     async def attention(self, audio_file):
         vcs_to_play = []
@@ -93,9 +90,8 @@ class AttentionAttention(commands.Cog):
                 await asyncio.sleep(1)
             await voice_client.disconnect()
 
-
-if __name__ == "__main__":
-    print("Attention! Attention! " + attention_attention.__version__ + " starting!")
+async def main():
+    print(f"libopus loaded status: {discord.opus.is_loaded()}")
     intents = discord.Intents.default()
     intents.members = True
 
@@ -107,12 +103,30 @@ if __name__ == "__main__":
     async def on_ready():
         print(f"Logged in as {bot.user} ({bot.user.id})")
         print(f"Discord bot invite link: {discord.utils.oauth_url(client_id=bot.user.id)}")
+        print(f"The bot is in {len(bot.guilds)} guilds: {', '.join([guild.name for guild in bot.guilds])}")
+        if (os.getenv("DISCORD_COMMAND_SYNC")):
+            print("Performing initial command tree sync")
+            await bot.tree.sync()
+            await bot.tree.sync(guild=discord.Object(id=499989296451944489))
+            print("Completed initial command tree sync")
 
     token = os.getenv("DISCORD_TOKEN")
-
     if not token:
         print("DISCORD_TOKEN environment variable is missing!")
         exit()
 
-    bot.add_cog(AttentionAttention(bot))
-    bot.run(token)
+    await bot.add_cog(AttentionAttention(bot))
+    await bot.start(token)
+
+if __name__ == "__main__":
+    print("Attention! Attention! " + attention_attention.__version__ + " starting!")
+    print(f"Current time zone: {datetime.datetime.now(datetime.timezone.utc).astimezone().tzinfo}")
+
+    if not discord.opus._load_default():
+        discord.opus.load_opus(os.getenv("LIBOPUS_PATH"))
+
+    if not discord.opus.is_loaded():
+        print(f"Something went wrong loading libopus")
+        exit(1)
+
+    asyncio.run(main())
