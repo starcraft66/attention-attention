@@ -20,6 +20,21 @@
 3. Load the docker image into your local registry with `docker load < result`.
 4. Tag/push/run the image like you normally would using the docker cli!
 
+## Commands
+
+This bot implements a few interactions (a.k.a. "slash commands"):
+|Command|Description|
+|-|-|
+|`/attention`|Prints an "Attention! Attention!" message|
+|`/about`|Prints the bot version and invite link|
+|`/sync`|Performs a full command tree sync -- This command is only available to the bot owner in the administrative guild|
+
 ## Runtime requirements
 
-The only thing this bot needs to run is a discord bot token stored in the `DISCORD_TOKEN` environment variable.
+There are a few environment variables that can control the runtime behaviour of the bot:
+
+|Environment Variable|Description|
+|-|-|
+|`DISCORD_TOKEN`|The discord bot token to log in with|
+|`LIBOPUS_PATH`|The path to the libopus library if it cannot be determined automatically by python|
+|`DISCORD_COMMAND_SYNC`|Set this to any value to perform a full command tree sync on launch. This is required to perform the initial command tree sync when bootstrapping the bot. Once this is done, the `/sync` command in the administrative guid can be used for subsequent command tree syncs.|
