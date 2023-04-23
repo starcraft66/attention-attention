@@ -36,7 +36,7 @@
 
         packages.attention-attention = pkgs.python311Packages.buildPythonPackage rec {
           pname = "attention-attention";
-          version = "v1.0.0";
+          version = "v1.0.1";
 
           src = ./.;
 
