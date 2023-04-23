@@ -1,7 +1,8 @@
 {
   description = "attention-attention reference Nix architecture";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+  # Until https://github.com/NixOS/nixpkgs/pull/227670 is merged
+  inputs.nixpkgs.url = "github:starcraft66/nixpkgs/patch-4";
   inputs.flake-utils.url = "github:numtide/flake-utils";
 
   outputs = { self, nixpkgs, flake-utils }:
@@ -13,24 +14,33 @@
       in
       rec {
         apps = {
-          attention-attention = packages.attention-attention;
+          attention-attention = {
+            type = "app";
+            program = let
+              customPython = pkgs.python311.withPackages (ps: [ self.packages.${system}.attention-attention ]);
+              wrapper = pkgs.writeScriptBin "attention-attention"
+              ''
+                ${customPython}/bin/python3 -m attention_attention $@
+              '';
+            in "${wrapper}/bin/attention-attention";
+          };
         };
 
         devShell = let
-            customPython = pkgs.python38.withPackages (ps: with pkgs.python38.pkgs; [ discordpy aiocron tzlocal ]);
+            customPython = pkgs.python311.withPackages (ps: with pkgs.python311.pkgs; [ discordpy aiocron tzlocal ]);
           in pkgs.mkShell {
           buildInputs = with pkgs; [
             customPython
           ];
         };
 
-        packages.attention-attention = pkgs.python38Packages.buildPythonPackage rec {
+        packages.attention-attention = pkgs.python311Packages.buildPythonPackage rec {
           pname = "attention-attention";
           version = "v1.0.0";
 
           src = ./.;
 
-          propagatedBuildInputs = with pkgs.python38.pkgs; [
+          propagatedBuildInputs = with pkgs.python311.pkgs; [
             discordpy
             aiocron
           ];
@@ -47,7 +57,7 @@
         };
 
         dockerImage = let
-            customPython = pkgs.python38.withPackages (ps: [ packages.attention-attention ]);
+            customPython = pkgs.python311.withPackages (ps: [ packages.attention-attention ]);
           in pkgs.dockerTools.buildImage {
           name = "attention-attention";
           tag = packages.attention-attention.version;
