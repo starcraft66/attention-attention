@@ -31,5 +31,7 @@ jobs:
     - name: Tag and push Docker image
       run: |
         TAG=$(nix eval '.#attention-attention.version' | sed s/\"//g)
-        docker tag attention-attention:$TAG ghcr.io/starcraft66/attention-attention/attention-attention:$TAG
-        docker push ghcr.io/starcraft66/attention-attention/attention-attention:$TAG
+        ARCH=${{ matrix.arch }}
+        ARCH_TAG=$TAG-$(echo $ARCH | sed 's/-linux//')
+        docker tag attention-attention:$TAG ghcr.io/starcraft66/attention-attention/attention-attention:$ARCH_TAG
+        docker push ghcr.io/starcraft66/attention-attention/attention-attention:$ARCH_TAG
