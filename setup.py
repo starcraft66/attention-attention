@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="attention-attention",
-    version="1.0.1",
+    version="1.0.2",
     author="Tristan Gosselin-Hane, Roch D'Amour",
     author_email="starcraft66@gmail.com, roch.damour@gmail.com",
     description="Plays attention-attention in voice chat early in the morning",
