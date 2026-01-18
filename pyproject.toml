@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "attention-attention"
+version = "1.0.2"
+description = "Plays attention-attention in voice chat early in the morning"
+readme = "README.md"
+license = "GPL-3.0-only"
+authors = [
+    { name = "Tristan Gosselin-Hane", email = "starcraft66@gmail.com" },
+    { name = "Roch D'Amour", email = "roch.damour@gmail.com" },
+]
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.setuptools.package-data]
+attention_attention = ["media/*"]
