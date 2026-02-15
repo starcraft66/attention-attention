@@ -7,7 +7,7 @@ name = "attention-attention"
 version = "1.0.2"
 description = "Plays attention-attention in voice chat early in the morning"
 readme = "README.md"
-license = "GPL-3.0-only"
+license = "GPL-3.0-or-later"
 authors = [
     { name = "Tristan Gosselin-Hane", email = "starcraft66@gmail.com" },
     { name = "Roch D'Amour", email = "roch.damour@gmail.com" },

@@ -68,7 +68,7 @@
           meta = with pkgs.lib; {
             description = "A friendly discord reminder that school's about to close!";
             homepage = "https://github.com/starcraft66/attention-attention/";
-            license = licenses.gpl3Only;
+            license = licenses.gpl3Plus;
             maintainers = [ maintainers.starcraft66 ];
           };
         };
