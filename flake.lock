@@ -17,16 +17,15 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1682190660,
-        "narHash": "sha256-PBy07c+HgRfGDMhTpg1qG4y/rUmvbC3XKzYqTTZUte4=",
-        "owner": "starcraft66",
+        "lastModified": 1768720554,
+        "narHash": "sha256-cV1JFQBhu3wLU25yT2+qm0WesQFQySYhbyoLUFCekUU=",
+        "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "012eaa6af0cec4767a535d956d33e2c5acbec879",
+        "rev": "61f13eaabd67b2faea177fadd40db32339553077",
         "type": "github"
       },
       "original": {
-        "owner": "starcraft66",
-        "ref": "patch-4",
+        "owner": "nixos",
         "repo": "nixpkgs",
         "type": "github"
       }
