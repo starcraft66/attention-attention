@@ -50,7 +50,7 @@
 
         packages.attention-attention = pkgs.python314Packages.buildPythonPackage rec {
           pname = "attention-attention";
-          version = "v1.0.2";
+          version = "v1.0.3";
 
           src = ./.;
 
